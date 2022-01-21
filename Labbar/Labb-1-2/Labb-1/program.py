@@ -1,5 +1,4 @@
 from modules import print_divisible_numbers, guessing_game, is_valid_program
-from termcolor import colored
 
 if __name__ == '__main__':
   print("Programs: ")
@@ -7,7 +6,7 @@ if __name__ == '__main__':
   print("\t- guessing_game")
   value = input('Please enter the program you want to run: ')
   while is_valid_program(value):
-    print(colored("Error: Invalid input program", red))
+    print("Error: Invalid input program")
     value = input('Please enter the program you want to run: ')
 
   if value == "print_divisible_numbers":

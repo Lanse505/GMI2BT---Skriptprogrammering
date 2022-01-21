@@ -7,7 +7,6 @@ def print_divisible_numbers():
     while not is_integer(div1):
         print("Error: Invalid Input for Denominator")
         div1 = input('Please enter denominator 1: ')
-
     div2 = input('Please enter denominator 2: ')
     while not is_integer(div2):
         print("Error: Invalid Input for Denominator")
@@ -27,12 +26,10 @@ def guessing_game():
         while not is_integer(guess) or not is_within(int(guess), 1, 1000):
             print("Error: Invalid Input - Number needs to be between 1-1000")
             guess = int(input('Please enter a number between 1-1000: '))
-
         if guess < number:
             print("The entered guess was wrong! Too Low")
         elif guess > number:
             print("The entered guess was wrong! Too High")
-
     print(f"Congratulations You Won! The number was {number}")
 
 
