@@ -31,20 +31,21 @@ def populate_from_csv(csv_dict, field_names):
 
 # TODO: Code Review with Joakim
 # Flushes the code from the stored object map to JSON and the csv
-def flush_to_csv(csv_dict):
+def flush_to_csv(csv_dict, field_names_sv):
     with open('./temp.json', "w", encoding='utf-8-sig') as clear:  # Clear the json file
-        pass
-    with open('./temp.json', "r+", encoding='utf-8-sig') as flush:
-        json.dump(csv_dict, flush, indent=True, ensure_ascii=False)
-    with open('./temp.json', "r+", encoding='utf-8-sig') as saved:
-        csv_dict = json.load(saved)
-        with open('./labb2_personer_vt22.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(['användarnamn', 'förnamn', 'efternamn', 'epost'])
-            for (key, value) in enumerate(csv_dict.items()):
-                nk, nv = value
+        pass # Just close the file, so that we clear it and then close it
+    with open('./temp.json', "r+", encoding='utf-8-sig') as flush:  # Opens the file again but in read/write mode
+        json.dump(csv_dict, flush, indent=True, ensure_ascii=False)  # Dumps the csv_dict contents to the json
+    with open('./temp.json', "r+", encoding='utf-8-sig') as saved:  # Opens the file again in read/write mode
+        csv_dict = json.load(saved)  # Loads the Json into csv_dict overriding it with the contents of the JSON
+        with open('./labb2_personer_vt22.csv', 'w', newline='') as file:  # Opens the csv file itself
+            writer = csv.writer(file)  # Grabs the writer for the file
+            writer.writerow(field_names_sv)  # Writes the header using swedish names
+            for (key, value) in enumerate(csv_dict.items()):  # Loops over the top-level keys and values
+                nk, nv = value  # Grabs the value which is a key/value store
+                # Writes a row consisting of the internal values of 'username', 'first_name', 'last_name' and 'email'
                 writer.writerow([nv['username'], nv['first_name'], nv['last_name'], nv['email']])
-    return -1
+    return -1  # Returns -1 to reset the menu to the Main Menu
 
 
 # TODO: Code Review with Joakim

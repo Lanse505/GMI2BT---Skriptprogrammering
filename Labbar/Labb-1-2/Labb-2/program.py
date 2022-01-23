@@ -15,7 +15,7 @@ if __name__ == '__main__':  # Checks if the code is being invoked directly and n
 #####################
             """
     field_names = ['username', 'first_name', 'last_name', 'email']  # Default Field Names
-    field_names_sv = ['användarnamn', 'förnamn', 'efternamn', 'epost'] # Default Swedish Field Names
+    field_names_sv = ['användarnamn', 'förnamn', 'efternamn', 'epost']  # Default Swedish Field Names
 
     # Get if the user wants to load from the target CSV or the cached JSON
     get_from_csv = input("Do you want to load from a CSV or from the cached JSON? [CSV, JSON]: ")
@@ -54,7 +54,7 @@ if __name__ == '__main__':  # Checks if the code is being invoked directly and n
             input("Press Any Key to Return to Menu")  # Input to not instantly clear the message line
         elif option == 3:  # option 3: Flush JSON to CSV
             print("Flushing JSON to CSV")  # Info Message
-            option = util.flush_to_csv(csv_dict)  # Calls flush_to_csv in util
+            option = util.flush_to_csv(csv_dict, field_names_sv)  # Calls flush_to_csv in util
             input("Press Any Key to Return to Menu")  # Input to not instantly clear the message line
         elif option == 4:  # option 4: runs the get_user_data function in util
             option = util.get_user_data(csv_dict)  # Calls the get_user_data function in util
