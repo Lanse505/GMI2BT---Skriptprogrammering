@@ -31,21 +31,26 @@ def populate_from_csv(csv_dict, field_names):
 
 # TODO: Code Review with Joakim
 # Flushes the code from the stored object map to JSON and the csv
-def flush_to_csv(csv_dict, field_names_sv):
-    with open('./temp.json', "w", encoding='utf-8-sig') as clear:  # Clear the json file
-        pass # Just close the file, so that we clear it and then close it
-    with open('./temp.json', "r+", encoding='utf-8-sig') as flush:  # Opens the file again but in read/write mode
-        json.dump(csv_dict, flush, indent=True, ensure_ascii=False)  # Dumps the csv_dict contents to the json
+def flush_from_json_to_csv(field_names_sv):
     with open('./temp.json', "r+", encoding='utf-8-sig') as saved:  # Opens the file again in read/write mode
-        csv_dict = json.load(saved)  # Loads the Json into csv_dict overriding it with the contents of the JSON
+        json_dict = json.load(saved)  # Loads the Json into csv_dict overriding it with the contents of the JSON
         with open('./labb2_personer_vt22.csv', 'w', newline='') as file:  # Opens the csv file itself
-            writer = csv.writer(file)  # Grabs the writer for the file
+            writer = csv.writer(file, delimiter=';')  # Grabs the writer for the file
             writer.writerow(field_names_sv)  # Writes the header using swedish names
-            for (key, value) in enumerate(csv_dict.items()):  # Loops over the top-level keys and values
+            for (key, value) in enumerate(json_dict.items()):  # Loops over the top-level keys and values
                 nk, nv = value  # Grabs the value which is a key/value store
                 # Writes a row consisting of the internal values of 'username', 'first_name', 'last_name' and 'email'
                 writer.writerow([nv['username'], nv['first_name'], nv['last_name'], nv['email']])
     return -1  # Returns -1 to reset the menu to the Main Menu
+
+
+# TODO: Code Review with Joakim
+# Flushes the csv_dict contents to JSON
+def flush_to_json(csv_dict):
+    with open('./temp.json', "w", encoding='utf-8-sig'):  # Clear the json file
+        pass  # Just close the file, so that we clear it and then close it
+    with open('./temp.json', "w", encoding='utf-8-sig') as flush:  # Opens the file again but in read/write mode
+        json.dump(csv_dict, flush, indent=True, ensure_ascii=False)  # Dumps the csv_dict contents to the json
 
 
 # TODO: Code Review with Joakim
@@ -68,6 +73,7 @@ def addPerson(csv_dict):
                  'last_name': last_name, 'email': username + "@du.se"
                  }
     csv_dict[username] = user_dict
+    flush_to_json(csv_dict)
     return -1
 
 
@@ -80,6 +86,7 @@ def removePerson(removed, csv_dict):
             return -1
         if username in csv_dict:
             csv_dict.pop(username)
+            flush_to_json(csv_dict)
             print(f"Removed user: {username}")
             removed = True
         else:
