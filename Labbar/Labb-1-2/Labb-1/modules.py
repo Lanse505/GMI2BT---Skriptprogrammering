@@ -15,22 +15,27 @@ def print_divisible_numbers():
     for number in range(0, 1001, 1):
         if number % int(div1) == 0 and number % int(div2) == 0:
             valid_numbers.append(number)
+    valid_numbers.remove(0)
     print(valid_numbers)
 
 
 def guessing_game():
-    number = randint(1, 1000)
+    number = randint(1, 100)
     guess = 0
+    tries = 0
     while guess != number:
-        guess = input('Please enter a number between 1-1000: ')
-        while not is_integer(guess) or not is_within(int(guess), 1, 1000):
-            print("Error: Invalid Input - Number needs to be between 1-1000")
-            guess = int(input('Please enter a number between 1-1000: '))
+        guess = input('Please enter a number between 1-100: ')
+        while not is_integer(guess) or not is_within(int(guess), 1, 100):
+            print("Error: Invalid Input - Number needs to be between 1-100")
+            guess = int(input('Please enter a number between 1-100: '))
+        guess = int(guess)
         if guess < number:
             print("The entered guess was wrong! Too Low")
+            tries += 1
         elif guess > number:
             print("The entered guess was wrong! Too High")
-    print(f"Congratulations You Won! The number was {number}")
+            tries += 1
+    print(f"Congratulations You Won! The number was {number}, It took you {tries + 1} tries to find the correct number.")
 
 
 # Checker Methods
@@ -49,6 +54,6 @@ def is_within(value, minimum_inclusive, maximum_inclusive):
 
 
 def is_valid_program(value):
-    if value != "print_divisible_numbers" or value != "guessing_game":
+    if value != "print_divisible_numbers" and value != "guessing_game":
         return False
     return True

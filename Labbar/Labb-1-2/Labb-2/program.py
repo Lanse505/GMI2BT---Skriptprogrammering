@@ -26,7 +26,7 @@ if __name__ == '__main__':  # Checks if the code is being invoked directly and n
         with open('./temp.json', "r+", encoding='utf-8-sig') as temp:  # Opens the existing temp.json
             csv_dict = json.load(temp)  # Parses the JSON into the csv_dict as a dict object
     with open('./temp.json', "w+", encoding='utf-8-sig') as temp:  # Opens a new file
-        json.dump(csv_dict, temp, indent=True, ensure_ascii=False)  # Dumps the dict to Json
+        json.dump(csv_dict, temp, indent=True, ensure_ascii=False, cls=util.PersonEncoder)  # Dumps the dict to Json
 
     is_first_run = True  # Sets the "first run" value so it only prints the json to log once
     while True:  # Continuous Loop that's broken out of later
