@@ -30,8 +30,6 @@ def open_csv(path: str, mode: str):
     return reader, file  # Returns a tuple of the csv reader and the original file
 
 
-# TODO: Code Review with Joakim
-# TODO: Rewrite to support any input location
 # Populates the csv_dict object using the clean csv file
 def populate_from_csv(csv_dict, field_names):
     csv_file, file = open_csv("./clean.csv", "r+")  # Opens the csv
@@ -50,7 +48,6 @@ def populate_from_csv(csv_dict, field_names):
     file.close()  # Closes the file reference
 
 
-# TODO: Code Review with Joakim
 # Flushes the code from the stored object map to JSON and the csv
 def flush_from_json_to_csv(field_names_sv):
     with open('./temp.json', "r+", encoding='utf-8-sig') as saved:  # Opens the file again in read/write mode
@@ -66,7 +63,6 @@ def flush_from_json_to_csv(field_names_sv):
     return -1  # Returns -1 to reset the menu to the Main Menu
 
 
-# TODO: Code Review with Joakim
 # Flushes the csv_dict contents to JSON
 def flush_to_json(csv_dict):
     with open('./temp.json', "w", encoding='utf-8-sig') as flush:  # Clear the json file
@@ -74,7 +70,6 @@ def flush_to_json(csv_dict):
         json.dump(csv_dict, flush, indent=True, ensure_ascii=False, cls=PersonEncoder)
 
 
-# TODO: Code Review with Joakim
 # Adds a new person to the csv dictionary, also applies regex input validation.
 def addPerson(csv_dict):
     username = input("Please enter a username for the person you want to add: ")  # Grab the username input
@@ -95,12 +90,11 @@ def addPerson(csv_dict):
     user_dict = {'username': username, 'first_name': first_name,
                  'last_name': last_name, 'email': username + "@du.se"
                  }
-    csv_dict[username] = user_dict  # Add the user-dict to the internal csv-dict
+    csv_dict[username] = Person(user_dict)  # Add the user-dict to the internal csv-dict
     flush_to_json(csv_dict)  # Flush the newly added content to JSON
     return -1  # Return -1 to return to main menu
 
 
-# TODO: Code Review with Joakim
 # Removes a person from the list, validates the input username by checking if the dict contains the name.
 def removePerson(removed, csv_dict):
     while not removed:  # Check so an removal hasn't been done
@@ -117,7 +111,6 @@ def removePerson(removed, csv_dict):
             print(f"Error: User with Username: {username} , Didn't exist!")  # If the user didn't exist, print error
 
 
-# TODO: Code Review with Joakim
 # Gets the userdata for the provided username, uses both regex validation and existence validation to validate the input
 def get_user_data(csv_data):
     username = input("Please enter the username of the user you want to view: ")  # Gather username input
@@ -146,13 +139,6 @@ def is_integer(num):
         return False  # If failure False
 
 
-# Checks if the provided string is valid against the provided regex pattern
-def is_regex_compliant(testable: str, pattern: str):
-    if re.match(pattern, testable):  # Attempt to match string against provide regex pattern
-        return True  # If it passes Regex then return True
-    return False  # If it doesn't pass Regex then return False
-
-
 # Checks if the provided value is less than the maximum specified value but greater than the minimum specified value.
 def is_within(value, minimum_inclusive, maximum_inclusive):
     # Check so that the value is:
@@ -161,3 +147,10 @@ def is_within(value, minimum_inclusive, maximum_inclusive):
     if minimum_inclusive <= value <= maximum_inclusive:
         return True  # Returns true if it's between min_inclusive and max_inclusive
     return False  # Returns false if it's outside the bounds of min_inclusive and max_inclusive
+
+
+# Checks if the provided string is valid against the provided regex pattern
+def is_regex_compliant(testable: str, pattern: str):
+    if re.match(pattern, testable):  # Attempt to match string against provide regex pattern
+        return True  # If it passes Regex then return True
+    return False  # If it doesn't pass Regex then return False

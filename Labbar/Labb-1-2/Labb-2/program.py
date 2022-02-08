@@ -34,7 +34,7 @@ if __name__ == '__main__':  # Checks if the code is being invoked directly and n
         if is_first_run:  # If it is the first run
             with open('./temp.json', "r+", encoding='utf-8-sig') as temp:  # Opens up the temp.json
                 print(temp.read())  # Prints the entire file contents to log
-            print() # Print empty line
+            print()  # Print empty line
             is_first_run = False  # Set that this is no longer the first run of the main menu
 
         while option == -1:  # If the option value is -1 then run the main menu cycle
@@ -42,7 +42,7 @@ if __name__ == '__main__':  # Checks if the code is being invoked directly and n
             valueIn = input("Select your preferred option: ")  # Asks for the preferred program option
             # Checks if the input is a parsable integer and is within 1-5
             while not util.is_integer(valueIn) or not util.is_within(int(valueIn), 1, 5):
-                print("Error: Invalid Input, Please enter a number between 1-4") # Prints error message if not
+                print("Error: Invalid Input, Please enter a number between 1-5")  # Prints error message if not
                 valueIn = input("Select your preferred option: ")  # Asks for new input and loops
             option = int(valueIn)  # Parses the validated input to the option value
 

@@ -1,42 +1,38 @@
+import os.path
+
 import util
 import requests
-
 import search
 
 
 def runSearchMenuLogic(api_key: str):
-    typeTarget, movieId = util.getSearchID()
-    if typeTarget.lower() == 'id':
-        r = requests.get(f"http://www.omdbapi.com/?apikey={api_key}&i={movieId}")
-    else:
-        r = requests.get(f"http://www.omdbapi.com/?apikey={api_key}&s={movieId}")
+    typeTarget, movie_id = util.getSearchID()
+    r = util.getRequest(api_key, typeTarget, movie_id)
     if r.status_code != 200 or 'Error' in r.json():
-        print()
-        print("Error: The requested ID was either found no results or returned a status-code other than 200")
-        print(f"Status Code: {r.status_code}")
-        print(f"Error: {r.json()['Error']}")
-        print(f"Reason: {r.reason}")
-        print()
-        input("Press any key to continue back to MainMenu")
-        return -1
+        util.handleSearchError(r)
     else:
         rj = r.json()
         handlers = []
         if 'Search' in rj:
             for d in rj['Search']:
-                handlers.append(f"Option {rj['Search'].index(d)}: {search.handler.SearchHandler(True, d)}")
+                handlers.append(f"Option {rj['Search'].index(d)}: {search.searchHandler.SearchHandler(True, d)}")
             for h in handlers:
                 print(h)
             target = input("Which of the above movies/series did you want to view?: ")
             while not util.is_integer(target) or not util.is_within(int(target), 0, len(rj['Search'])):
                 print("Error: Invalid Target ID")
                 target = input("Which of the above movies/series did you want to view?: ")
+            title = rj['Search'][int(target)]['Title']
             imdbId = rj['Search'][int(target)]["imdbID"]
+            util.handleSearchSave(title, imdbId)
             r = requests.get(f"http://www.omdbapi.com/?apikey={api_key}&i={imdbId}")
-            handler = search.handler.SearchHandler(False, r.json())
+            handler = search.searchHandler.SearchHandler(False, r.json())
             print(handler)
         else:
-            handler = search.handler.SearchHandler(False, rj)
+            title = rj['Title']
+            imdbId = rj["imdbID"]
+            print(title, imdbId)
+            util.handleSearchSave(title, imdbId)
+            handler = search.searchHandler.SearchHandler(False, rj)
             print(handler)
         input("Press any key to continue back to MainMenu")
-        return -1
